@@ -73,10 +73,32 @@
   .cnt-bar{display:inline-block;height:6px;border-radius:3px;background:linear-gradient(90deg,#4C7A6B,#8bb0a2);vertical-align:middle;margin-left:6px}
   footer{margin-top:22px;font-size:11.5px;color:#a89a78;line-height:1.7;text-align:center}
   footer a{color:#8a7f68;text-decoration:underline}
+  /* ── 모바일: 표를 카드로 쌓아 세로 스크롤만으로 보기 ── */
+  @media (max-width:720px){
+    .grid-wrap{overflow-x:visible;border:none;background:transparent;box-shadow:none;border-radius:0}
+    table{min-width:0;width:100%;table-layout:auto;display:block;font-size:13.5px}
+    colgroup{display:none}
+    thead{display:none}
+    tbody{display:block}
+    tbody tr{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;
+      margin-bottom:11px;padding:13px 14px 15px;box-shadow:0 2px 8px rgba(74,63,40,.06)}
+    tbody td{display:block;border:none;padding:0}
+    tbody td, tbody tr:nth-child(even) td, tbody tr:hover td{background:transparent}
+    tbody td.rownum, tbody tr:nth-child(even) td.rownum, tbody tr:hover td.rownum{background:transparent}
+    td.rownum,td.unit,td.era,td.num{position:static;display:inline;width:auto;min-width:0;border:none;
+      text-align:left;font-size:11.5px;font-weight:700;color:var(--muted)}
+    td.rownum{color:#b0a488}
+    td.unit::before,td.era::before,td.num::before{content:'·';margin:0 5px;color:#cec2a9}
+    td.num .cnt-bar{display:none}
+    td.num::after{content:'회'}
+    td.kw{display:block;font-size:16.5px;line-height:1.35;margin:7px 0 9px}
+    td.info{display:block}
+    .subj{margin:0 0 4px}
+    .stmt{display:block}
+    .expl{font-size:13px;margin-top:7px}
+  }
   @media (max-width:560px){
     .ttl{font-size:19px}.wrap{padding:16px 10px 50px}
-    table{font-size:12.5px}thead th,tbody td{padding:8px 8px}
-    .expl{font-size:12px}
   }
 </style>
 </head>
