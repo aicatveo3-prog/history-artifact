@@ -29,7 +29,6 @@
   .btn{padding:9px 13px;background:var(--card);border:1px solid #E0D8C4;border-radius:11px;font:inherit;
     font-size:13px;font-weight:700;color:#5f5748;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);white-space:nowrap}
   .btn:hover{background:var(--chip)}
-  .btn.on{background:var(--ink);color:#F4EFE2;border-color:var(--ink)}
   .seg{display:inline-flex;border:1px solid #E0D8C4;border-radius:11px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
   .seg button{padding:9px 13px;background:var(--card);border:none;font:inherit;font-size:13px;font-weight:700;color:#6f6550;cursor:pointer}
   .seg button.on{background:var(--green);color:#fff}
@@ -42,21 +41,20 @@
   .count b{color:var(--green)}
   .grid-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);
     box-shadow:0 4px 16px rgba(74,63,40,.08);-webkit-overflow-scrolling:touch}
-  table{border-collapse:separate;border-spacing:0;width:100%;min-width:900px;table-layout:fixed;font-size:13.5px}
-  colgroup col.c-num{width:3.2%} colgroup col.c-unit{width:9%} colgroup col.c-era{width:7.5%}
-  colgroup col.c-cnt{width:8.5%} colgroup col.c-kw{width:12%} colgroup col.c-ans{width:8.5%}
-  colgroup col.c-c1{width:24.5%} colgroup col.c-desc{width:26.8%}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:760px;table-layout:fixed;font-size:13.5px}
+  col.c-num{width:3.4%} col.c-unit{width:9.4%} col.c-era{width:7.8%}
+  col.c-cnt{width:8.6%} col.c-kw{width:12.4%} col.c-info{width:58.4%}
   thead th{position:sticky;top:0;z-index:3;background:var(--green);color:#fff;font-weight:700;
-    padding:11px 10px;text-align:left;cursor:pointer;user-select:none;border-right:1px solid rgba(255,255,255,.14);
-    word-break:keep-all}
-  thead th:hover{background:var(--green-d)}
+    padding:11px 10px;text-align:left;user-select:none;border-right:1px solid rgba(255,255,255,.14);word-break:keep-all}
+  thead th[data-k]{cursor:pointer}
+  thead th[data-k]:hover{background:var(--green-d)}
   thead th .ar{opacity:.5;font-size:11px;margin-left:2px}
   thead th.act .ar{opacity:1}
   th.rownum,td.rownum{position:sticky;left:0;z-index:2;background:#EFE7D5;color:var(--muted);
     text-align:center;font-weight:700;border-right:1px solid var(--line)}
   thead th.rownum{z-index:4;background:var(--green)}
-  tbody td{padding:10px 11px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
-    vertical-align:top;line-height:1.55;word-break:break-word;overflow-wrap:anywhere}
+  tbody td{padding:11px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+    vertical-align:top;line-height:1.6;word-break:break-word;overflow-wrap:anywhere}
   tbody tr:nth-child(even) td{background:var(--zebra)}
   tbody tr:nth-child(even) td.rownum{background:#EAE1CD}
   tbody tr:hover td{background:#EFF3EC}
@@ -65,19 +63,18 @@
   td.era{font-weight:700;color:#6f6550;font-variant-numeric:tabular-nums;white-space:nowrap}
   td.kw{font-weight:700;color:var(--ink)}
   td.unit{font-weight:600;color:#6f6550}
-  .ans-badge{display:inline-block;padding:2px 9px;border-radius:999px;background:#EAF1EE;border:1px solid #d5e5df;
-    color:var(--green);font-weight:700;font-size:12px}
-  td.desc{color:#514a3c;font-size:13px}
+  /* merged explanation cell */
+  .subj{display:inline-block;padding:2px 9px;margin-right:6px;border-radius:999px;background:#EAF1EE;
+    border:1px solid #d5e5df;color:var(--green);font-weight:700;font-size:12px;vertical-align:1px}
+  .stmt{font-weight:700;color:#33302a}
+  .expl{margin:5px 0 0;color:#5d5648;font-size:12.8px;line-height:1.65}
   .cnt-bar{display:inline-block;height:6px;border-radius:3px;background:linear-gradient(90deg,#4C7A6B,#8bb0a2);vertical-align:middle;margin-left:6px}
-  body.hideans td.ans .ans-badge{color:transparent;background:#E7DFCC;border-color:#dcd0b6;position:relative;cursor:pointer;min-width:48px}
-  body.hideans td.ans .ans-badge::after{content:'?';color:var(--muted);position:absolute;left:0;right:0;text-align:center;font-size:12px;font-weight:800}
-  body.hideans td.ans .ans-badge.reveal{color:var(--green);background:#EAF1EE;border-color:#d5e5df}
-  body.hideans td.ans .ans-badge.reveal::after{content:''}
   footer{margin-top:22px;font-size:11.5px;color:#a89a78;line-height:1.7;text-align:center}
   footer a{color:#8a7f68;text-decoration:underline}
   @media (max-width:560px){
     .ttl{font-size:19px}.wrap{padding:16px 10px 50px}
     table{font-size:12.5px}thead th,tbody td{padding:8px 8px}
+    .expl{font-size:12px}
   }
 </style>
 </head>
@@ -85,7 +82,7 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="ttl">📊 한능검 빈출 선택지 표</div>
+      <div class="ttl">📊 한능검 빈출 선택지 정리</div>
       <div class="sub">한국사능력검정시험 단원별 핵심 키워드 · 총 <span id="tot">0</span>개 · 기본 시간순 정렬</div>
     </div>
     <a class="back" href="index.html">← 유물 학습으로</a>
@@ -94,12 +91,11 @@
   <div class="chips" id="unitChips"></div>
 
   <div class="toolbar">
-    <label class="search">🔎 <input id="q" type="search" placeholder="키워드·선택지·설명 검색…" autocomplete="off"></label>
+    <label class="search">🔎 <input id="q" type="search" placeholder="키워드·내용 검색…" autocomplete="off"></label>
     <span class="seg" id="modeSeg">
       <button data-m="chrono" class="on" type="button">🕰 시간순</button>
       <button data-m="freq" type="button">🔥 빈출순</button>
     </span>
-    <button class="btn" id="hideBtn" type="button">🙈 정답 가리기</button>
     <button class="btn" id="csvBtn" type="button">📥 CSV</button>
   </div>
 
@@ -108,8 +104,8 @@
   <div class="grid-wrap">
     <table>
       <colgroup>
-        <col class="c-num"><col class="c-unit"><col class="c-era"><col class="c-cnt">
-        <col class="c-kw"><col class="c-ans"><col class="c-c1"><col class="c-desc">
+        <col class="c-num"><col class="c-unit"><col class="c-era">
+        <col class="c-cnt"><col class="c-kw"><col class="c-info">
       </colgroup>
       <thead><tr id="head"></tr></thead>
       <tbody id="body"></tbody>
@@ -129,13 +125,11 @@ const UNIT_ORDER = ['고대국가','삼국시대','고려시대','조선시대',
 const uidx = u => UNIT_ORDER.indexOf(u);
 DATA.forEach(d=>{ d._u = uidx(d.unit); });
 const COLS = [
-  {k:'unit', label:'단원',        cls:'unit', type:'str'},
-  {k:'yl',   label:'연대',        cls:'era',  type:'year'},
-  {k:'cnt',  label:'출제횟수',    cls:'num',  type:'num'},
-  {k:'kw',   label:'핵심 키워드', cls:'kw',   type:'str'},
-  {k:'ans',  label:'정답',        cls:'ans',  type:'str'},
-  {k:'c1',   label:'대표 기출 선택지', cls:'c1', type:'str'},
-  {k:'desc', label:'설명',        cls:'desc', type:'str'},
+  {k:'unit', label:'단원',        cls:'unit', type:'str',  sortable:true},
+  {k:'yl',   label:'연대',        cls:'era',  type:'year', sortable:true},
+  {k:'cnt',  label:'출제횟수',    cls:'num',  type:'num',  sortable:true},
+  {k:'kw',   label:'핵심 키워드', cls:'kw',   type:'str',  sortable:true},
+  {k:'info', label:'설명',        cls:'info', type:'str',  sortable:false},
 ];
 const UNITS = [];
 DATA.forEach(d=>{ if(!UNITS.find(u=>u.name===d.unit)) UNITS.push({name:d.unit, icon:d.unitIcon}); });
@@ -143,7 +137,6 @@ UNITS.sort((a,b)=>uidx(a.name)-uidx(b.name));
 const maxCnt = Math.max.apply(null, DATA.map(d=>d.cnt));
 
 let state = {unit:'all', q:'', mode:'chrono', sortKey:null, sortDir:1};
-
 const $ = s=>document.querySelector(s);
 document.getElementById('tot').textContent = DATA.length;
 
@@ -160,6 +153,7 @@ const headEl = document.getElementById('head');
 function renderHead(){
   let h = '<th class="rownum">#</th>';
   h += COLS.map(c=>{
+    if(!c.sortable) return `<th>${c.label}</th>`;
     const act = state.sortKey===c.k;
     const ar = act ? (state.sortDir>0?'▲':'▼') : '↕';
     return `<th data-k="${c.k}" class="${act?'act':''}">${c.label}<span class="ar">${ar}</span></th>`;
@@ -176,6 +170,8 @@ document.getElementById('modeSeg').addEventListener('click', e=>{
   state.mode=b.dataset.m; state.sortKey=null; render(); });
 
 function esc(s){ return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+// 정답 + 선택지 + 설명을 한 덩어리 텍스트로 (CSV·검색용)
+function mergedText(d){ return `[${d.ans}] ${d.c1} ${d.desc}`; }
 
 function current(){
   let rows = DATA.slice();
@@ -189,8 +185,8 @@ function current(){
   } else if(state.sortKey){
     const c=COLS.find(x=>x.k===state.sortKey);
     rows.sort((a,b)=>{
-      if(c.type==='num'){ return (a.cnt-b.cnt)*state.sortDir; }
-      if(c.type==='year'){ return (a.sortYear-b.sortYear)*state.sortDir; }
+      if(c.type==='num')  return (a.cnt-b.cnt)*state.sortDir;
+      if(c.type==='year') return (a.sortYear-b.sortYear)*state.sortDir;
       return String(a[state.sortKey]).localeCompare(String(b[state.sortKey]),'ko')*state.sortDir;
     });
   }
@@ -208,9 +204,7 @@ function render(){
       <td class="era">${esc(d.yl)}</td>
       <td class="num">${d.cnt}${bar}</td>
       <td class="kw">${esc(d.kw)}</td>
-      <td class="ans"><span class="ans-badge">${esc(d.ans)}</span></td>
-      <td class="c1">${esc(d.c1)}</td>
-      <td class="desc">${esc(d.desc)}</td>
+      <td class="info"><span class="subj">${esc(d.ans)}</span><span class="stmt">${esc(d.c1)}</span><p class="expl">${esc(d.desc)}</p></td>
     </tr>`;
   }).join('');
   document.getElementById('count').innerHTML = `전체 ${DATA.length}개 중 <b>${rows.length}개</b> 표시`;
@@ -219,24 +213,12 @@ function render(){
 
 $('#q').addEventListener('input', e=>{ state.q=e.target.value.trim(); render(); });
 
-const hideBtn = $('#hideBtn');
-hideBtn.addEventListener('click', ()=>{
-  document.body.classList.toggle('hideans');
-  const on=document.body.classList.contains('hideans');
-  hideBtn.classList.toggle('on',on);
-  hideBtn.textContent = on ? '👁 정답 보이기' : '🙈 정답 가리기';
-});
-document.getElementById('body').addEventListener('click', e=>{
-  if(!document.body.classList.contains('hideans')) return;
-  const b=e.target.closest('.ans-badge'); if(b) b.classList.toggle('reveal');
-});
-
 $('#csvBtn').addEventListener('click', ()=>{
   const rows=current();
-  const head=['단원','연대','출제횟수','핵심 키워드','정답','대표 기출 선택지','설명'];
+  const head=['단원','연대','출제횟수','핵심 키워드','설명'];
   const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
   const lines=[head.map(q).join(',')];
-  rows.forEach(d=> lines.push([d.unit,d.yl,d.cnt,d.kw,d.ans,d.c1,d.desc].map(q).join(',')));
+  rows.forEach(d=> lines.push([d.unit,d.yl,d.cnt,d.kw,mergedText(d)].map(q).join(',')));
   const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
   a.download='한능검_빈출선택지.csv'; document.body.appendChild(a); a.click(); a.remove();
