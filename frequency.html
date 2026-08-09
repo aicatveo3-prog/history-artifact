@@ -120,7 +120,13 @@
       <button data-m="chrono" class="on" type="button">🕰 시간순</button>
       <button data-m="freq" type="button">🔥 빈출순</button>
     </span>
-    <button class="btn" id="newBtn" type="button">🆕 기출 보강분</button>
+    <span class="seg" id="srcSeg">
+      <button data-s="all" class="on" type="button">전체</button>
+      <button data-s="boost" type="button">🆕 보강</button>
+      <button data-s="77회" type="button">77회</button>
+      <button data-s="78회" type="button">78회</button>
+      <button data-s="79회" type="button">79회</button>
+    </span>
     <button class="btn" id="csvBtn" type="button">📥 CSV</button>
   </div>
 
@@ -161,7 +167,7 @@ DATA.forEach(d=>{ if(!UNITS.find(u=>u.name===d.unit)) UNITS.push({name:d.unit, i
 UNITS.sort((a,b)=>uidx(a.name)-uidx(b.name));
 const maxCnt = Math.max.apply(null, DATA.map(d=>d.cnt));
 
-let state = {unit:'all', q:'', mode:'chrono', sortKey:null, sortDir:1, onlyNew:false};
+let state = {unit:'all', q:'', mode:'chrono', sortKey:null, sortDir:1, src:'all'};
 const $ = s=>document.querySelector(s);
 document.getElementById('tot').textContent = DATA.length;
 
@@ -201,7 +207,8 @@ function mergedText(d){ return `[${d.ans}] ${d.c1} ${d.desc}`; }
 function current(){
   let rows = DATA.slice();
   if(state.unit!=='all') rows = rows.filter(d=>d.unit===state.unit);
-  if(state.onlyNew) rows = rows.filter(d=>d.src&&d.src!=='기존');
+  if(state.src==='boost') rows = rows.filter(d=>d.src&&d.src!=='기존');
+  else if(state.src!=='all') rows = rows.filter(d=>d.src===state.src);
   if(state.q){ const q=state.q.toLowerCase();
     rows = rows.filter(d=> (d.kw+' '+d.ans+' '+d.c1+' '+d.desc+' '+d.unit+' '+d.yl).toLowerCase().includes(q)); }
   if(state.mode==='chrono'){
@@ -235,16 +242,20 @@ function render(){
   }).join('');
   document.getElementById('count').innerHTML = `전체 ${DATA.length}개 중 <b>${rows.length}개</b> 표시`;
   document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on', b.dataset.m===state.mode));
+  document.querySelectorAll('#srcSeg button').forEach(b=>b.classList.toggle('on', b.dataset.s===state.src));
 }
 
 document.getElementById('newcnt').textContent = DATA.filter(d=>d.src&&d.src!=='기존').length;
-const newBtn=$('#newBtn');
-newBtn.addEventListener('click', ()=>{
-  state.onlyNew=!state.onlyNew;
-  newBtn.classList.toggle('on', state.onlyNew);
-  newBtn.textContent = state.onlyNew ? '🆕 보강분만 보는 중' : '🆕 기출 보강분';
-  render();
+document.querySelectorAll('#srcSeg button[data-s]').forEach(b=>{
+  const s=b.dataset.s;
+  const n = s==='all' ? DATA.length
+          : s==='boost' ? DATA.filter(d=>d.src&&d.src!=='기존').length
+          : DATA.filter(d=>d.src===s).length;
+  b.title = n+'개';
 });
+document.getElementById('srcSeg').addEventListener('click', e=>{
+  const b=e.target.closest('button[data-s]'); if(!b) return;
+  state.src=b.dataset.s; render(); });
 $('#q').addEventListener('input', e=>{ state.q=e.target.value.trim(); render(); });
 
 $('#csvBtn').addEventListener('click', ()=>{
